@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Casafy</string>
+    <string name="title_routines">Rutinas</string>
+    <string name="title_devices">Dispositivos</string>
+</resources>
