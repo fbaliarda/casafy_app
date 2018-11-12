@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        new AsyncTask<String,Void,Void>() {
+        new AsyncTask<String, Void, Void>() {
             @Override
             protected Void doInBackground(String... strings) {
                 try {
-                    List<Routine> routines = ApiManager.getRoutines();
-                    for(Routine routine : routines)
-                        Log.d("ROUTINES",routine.toString());
+                    List<Device> routines = ApiManager.getDevices();
+                    for (Device routine : routines)
+                        Log.d("ROUTINES", routine.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

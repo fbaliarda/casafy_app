@@ -1,10 +1,6 @@
 package com.app.franco.casafy;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -17,10 +13,10 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public abstract class ApiManager {
 
@@ -38,13 +34,20 @@ public abstract class ApiManager {
         urlConnection.setRequestMethod(requestMethod);
         urlConnection.setReadTimeout(TIMEOUT);
         urlConnection.setConnectTimeout(TIMEOUT);
-        if(requestMethod == "POST" || requestMethod == "PUT" ) {
+        urlConnection.setRequestProperty("content-type", "application/json");
+        urlConnection.setRequestProperty("charset", "utf-8");
+        if(requestMethod == "POST" || requestMethod == "PUT") {
             urlConnection.setDoOutput(true);
-            OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
-            writer.write(body);
-            writer.flush();
-            writer.close();
+            if(body != null) {
+                OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                writer.write(body);
+                writer.flush();
+                writer.close();
+            }
         }
+        int responseCode = urlConnection.getResponseCode();
+        if(responseCode != HttpURLConnection.HTTP_ACCEPTED && responseCode != HttpURLConnection.HTTP_OK)
+            throw new IOException();
         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
         String resultJSON = readStream(in);
         if (urlConnection != null)
@@ -64,6 +67,15 @@ public abstract class ApiManager {
         return result;
     }
 
+    private static String getJSONList(String json, String listName){
+        try {
+            JSONObject jsonObj = new JSONObject(json);
+            return jsonObj.getString(listName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     private static String setMetaJSON(String json){
         /* Elimina la barra para escapar caracteres y las comillas que aparecen antes y despues
          * de las llaves del atributo "meta" para que quede como un objeto JSON. */
@@ -71,49 +83,91 @@ public abstract class ApiManager {
         json = json.replace("\"{","{");
         return json.replace("}\"","}");
     }
+
     public static List<Room> getRooms() throws IOException {
         String roomsJSON = requestURL(BASE_URL + ROOMS,"GET",null);
-        String listJSON = null;
-        try {
-            JSONObject jsonObj = new JSONObject(roomsJSON);
-            listJSON = jsonObj.getString("rooms");
-            listJSON = setMetaJSON(listJSON);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String listJSON = getJSONList(roomsJSON,"rooms");
+        if(listJSON == null)
             return null;
-        }
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Room>>() {}.getType();
         return gson.fromJson(listJSON, listType);
     }
-    public static List<Device> getDevices() throws IOException {
-        String devicesJSON = requestURL(BASE_URL + DEVICES,"GET",null);
-        String listJSON = null;
-        try {
-            JSONObject jsonObj = new JSONObject(devicesJSON);
-            listJSON = jsonObj.getString("devices");
-            listJSON = setMetaJSON(listJSON);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public static List<Device> getDevices(String roomId) throws IOException {
+        String devicesJSON;
+        if(roomId == null)
+            devicesJSON = requestURL(BASE_URL + DEVICES,"GET",null);
+        else
+            devicesJSON = requestURL(BASE_URL + ROOMS + roomId + "/" + DEVICES,"GET",null);
+
+        String listJSON = getJSONList(devicesJSON,"devices");
+        if(listJSON == null)
             return null;
-        }
+        listJSON = setMetaJSON(listJSON);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Device>>() {}.getType();
         return gson.fromJson(listJSON, listType);
     }
+    public static List<Device> getDevices() throws IOException {
+        return getDevices(null);
+    }
     public static List<Routine> getRoutines() throws IOException {
         String routinesJSON = requestURL(BASE_URL + ROUTINES,"GET",null);
-        String listJSON = null;
-        try {
-            JSONObject jsonObj = new JSONObject(routinesJSON);
-            listJSON = jsonObj.getString("routines");
-        }catch(JSONException e){
-            e.printStackTrace();
+        String listJSON = getJSONList(routinesJSON,"routines");
+        if(listJSON == null)
             return null;
-        }
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Routine>>() {}.getType();
         return gson.fromJson(listJSON, listType);
+    }
+
+    public static Device createDevice(String name,String roomId,DeviceType type) throws IOException {
+        Gson gson = new Gson();
+        Device newDevice = new Device(name,type);
+        try {
+            //Crea el JSON para enviar a la api.
+            JSONObject deviceJSON = new JSONObject(gson.toJson(newDevice));
+            deviceJSON.remove("id");
+            deviceJSON.put("meta",newDevice.getMeta().toString());
+            String result = requestURL(BASE_URL + DEVICES,"POST",deviceJSON.toString());
+            JSONObject resultJSON = new JSONObject(result);
+            if(resultJSON.has("error"))
+                return null;
+            else {
+                //Crea el dispositivo con el JSON que envia de respuesta en la api.
+                Type deviceType = new TypeToken<Device>() {}.getType();
+                String jsonDevice = resultJSON.get("device").toString();
+                jsonDevice = setMetaJSON(jsonDevice);
+                Device createdDevice = gson.fromJson(jsonDevice,deviceType);
+                //Pasa el dispositivo al cuarto pasado como parametro.
+                String url = BASE_URL + DEVICES + createdDevice.getId() + "/" + ROOMS + roomId;
+                result = requestURL(url,"POST",null);
+                resultJSON = new JSONObject(result);
+                if((boolean)resultJSON.get("result"))
+                    return createdDevice;
+                else {
+                    //Si no se pudo asignar al cuarto se elimina el dispositivo.
+                    deleteDevice(createdDevice.getId());
+                    return null;
+                }
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static boolean deleteDevice(String deviceId) throws IOException {
+        String response = requestURL(BASE_URL + DEVICES + deviceId,"DELETE",null);
+        try {
+            JSONObject responseJSON = new JSONObject(response);
+            return (boolean)responseJSON.get("result");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

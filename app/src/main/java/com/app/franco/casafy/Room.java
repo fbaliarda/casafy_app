@@ -16,5 +16,4 @@ public class Room {
     public String toString() {
         return "name: " + name + ", id: " + id + ", meta: {" + meta + "}";
     }
-
 }

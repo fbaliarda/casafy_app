@@ -4,13 +4,14 @@ public class Meta {
     private boolean isFavourite;
     private String image;
 
-    public Meta(boolean isFavourite, String image){
-        this.isFavourite = isFavourite;
+    public Meta(boolean isFavorite, String image){
+        this.isFavourite = isFavorite;
         this.image = image;
     }
 
     @Override
     public String toString() {
-        return "isFavourite: " + isFavourite + " image: " + image;
+        //String como esta guardado en la api.
+        return "{\"isFavorite\": " + isFavourite + ", \"image\": \"" + image + "\"}";
     }
 }
