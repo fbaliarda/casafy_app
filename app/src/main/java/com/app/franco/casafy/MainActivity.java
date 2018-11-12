@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(String... strings) {
                 try {
-                    List<Room> rooms = ApiManager.getRooms();
-                    for(Room room : rooms)
-                        Log.d("ROOMS",room.toString());
+                    List<Routine> routines = ApiManager.getRoutines();
+                    for(Routine routine : routines)
+                        Log.d("ROUTINES",routine.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

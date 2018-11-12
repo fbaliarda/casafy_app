@@ -14,16 +14,7 @@ public class Room {
 
     @Override
     public String toString() {
-        return "name: " + name + ", id: " + id + ", meta: " + meta;
+        return "name: " + name + ", id: " + id + ", meta: {" + meta + "}";
     }
 
-    private class Meta {
-        private boolean isFavourite;
-        private String image;
-
-        public Meta(boolean isFavourite, String image){
-            this.isFavourite = isFavourite;
-            this.image = image;
-        }
-    }
 }
