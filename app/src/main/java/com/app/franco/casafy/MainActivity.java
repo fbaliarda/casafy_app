@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(String... strings) {
                 try {
-                    List<Device> routines = ApiManager.getDevices();
-                    for (Device routine : routines)
-                        Log.d("ROUTINES", routine.toString());
+                    List<Device> devices = ApiManager.getDevices();
+                    for (Device device : devices)
+                        Log.d("ROUTINES", device.toString());
+                    boolean b = ApiManager.deleteRoutine("9b63a3e785f47145");
+                    Log.d("AAAAAAAAAAAAAAAAA",String.valueOf(b));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

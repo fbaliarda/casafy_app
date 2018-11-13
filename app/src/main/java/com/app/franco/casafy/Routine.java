@@ -13,6 +13,11 @@ public class Routine {
         this.id = id;
         this.actions = actions;
     }
+    public Routine(String name, List<Action> actions){
+        this.name = name;
+        this.id = null;
+        this.actions = actions;
+    }
 
     @Override
     public String toString() {

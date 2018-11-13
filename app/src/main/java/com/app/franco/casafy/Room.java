@@ -11,7 +11,21 @@ public class Room {
         this.id = id;
         this.meta = meta;
     }
+    public Room(String name){
+        this.name = name;
+        this.id = null;
+        this.meta = new Meta(false,"rooms/room.jpg");
+    }
 
+    public String getName() {
+        return name;
+    }
+    public String getId() {
+        return id;
+    }
+    public Meta getMeta() {
+        return meta;
+    }
     @Override
     public String toString() {
         return "name: " + name + ", id: " + id + ", meta: {" + meta + "}";

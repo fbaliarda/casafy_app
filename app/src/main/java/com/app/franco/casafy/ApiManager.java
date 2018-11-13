@@ -1,8 +1,11 @@
 package com.app.franco.casafy;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +31,6 @@ public abstract class ApiManager {
 
     private static String requestURL(String urlString, String requestMethod, String body) throws IOException{
         HttpURLConnection urlConnection = null;
-
         URL url = new URL(urlString);
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod(requestMethod);
@@ -66,7 +68,14 @@ public abstract class ApiManager {
         outputStream.close();
         return result;
     }
-
+    private static boolean getResult(String resultJSON){
+        try {
+            return (boolean)new JSONObject(resultJSON).get("result");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     private static String getJSONList(String json, String listName){
         try {
             JSONObject jsonObj = new JSONObject(json);
@@ -123,12 +132,12 @@ public abstract class ApiManager {
 
     public static Device createDevice(String name,String roomId,DeviceType type) throws IOException {
         Gson gson = new Gson();
-        Device newDevice = new Device(name,type);
+        Device deviceInfo = new Device(name,type);
         try {
             //Crea el JSON para enviar a la api.
-            JSONObject deviceJSON = new JSONObject(gson.toJson(newDevice));
+            JSONObject deviceJSON = new JSONObject(gson.toJson(deviceInfo));
             deviceJSON.remove("id");
-            deviceJSON.put("meta",newDevice.getMeta().toString());
+            deviceJSON.put("meta",deviceInfo.getMeta().toString());
             String result = requestURL(BASE_URL + DEVICES,"POST",deviceJSON.toString());
             JSONObject resultJSON = new JSONObject(result);
             if(resultJSON.has("error"))
@@ -158,16 +167,73 @@ public abstract class ApiManager {
         }
 
     }
-
-    public static boolean deleteDevice(String deviceId) throws IOException {
-        String response = requestURL(BASE_URL + DEVICES + deviceId,"DELETE",null);
+    public static Room createRoom(String name) throws IOException {
+        Gson gson = new Gson();
+        Room roomInfo = new Room(name);
         try {
-            JSONObject responseJSON = new JSONObject(response);
-            return (boolean)responseJSON.get("result");
-        } catch (JSONException e) {
+            //Crea el JSON para enviar a la api.
+            JSONObject roomJSON = new JSONObject(gson.toJson(roomInfo));
+            roomJSON.remove("id");
+            roomJSON.put("meta",roomInfo.getMeta().toString());
+            String result = requestURL(BASE_URL + ROOMS,"POST",roomJSON.toString());
+            JSONObject resultJSON = new JSONObject(result);
+            if(resultJSON.has("error"))
+                return null;
+            else {
+                //Crea el cuarto con el JSON que envia de respuesta en la api.
+                Type roomType = new TypeToken<Room>() {}.getType();
+                String jsonRoom = resultJSON.get("room").toString();
+                jsonRoom = setMetaJSON(jsonRoom);
+                return gson.fromJson(jsonRoom,roomType);
+            }
+        }
+        catch (JSONException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
-
+    public static Routine createRoutine(String name, List<Action> actions) throws IOException {
+        Gson gson = new Gson();
+        Routine routineInfo = new Routine(name,actions);
+        try {
+            //Crea el JSON para enviar a la api.
+            JSONObject routineJSON = new JSONObject(gson.toJson(routineInfo));
+            routineJSON.remove("id");
+            //Agrega el meta vacio a la rutina y a las acciones.
+            routineJSON.put("meta","{}");
+            JSONArray actionsJSON = routineJSON.getJSONArray("actions");
+            for(int i=0 ; i < actionsJSON.length(); i++){
+                JSONObject action = actionsJSON.getJSONObject(i);
+                action.put("meta","{}");
+            }
+            //Almacena el arreglo de acciones como un string para poder enviar a la api.
+            routineJSON.put("actions",actionsJSON.toString());
+            String result = requestURL(BASE_URL + ROUTINES,"POST",routineJSON.toString());
+            JSONObject resultJSON = new JSONObject(result);
+            if(resultJSON.has("error"))
+                return null;
+            else {
+                //Crea el dispositivo con el JSON que envia de respuesta en la api.
+                Type routineType = new TypeToken<Routine>() {}.getType();
+                String jsonRoutine = resultJSON.get("routine").toString();
+                jsonRoutine = setMetaJSON(jsonRoutine);
+                return gson.fromJson(jsonRoutine,routineType);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static boolean deleteDevice(String deviceId) throws IOException {
+        String response = requestURL(BASE_URL + DEVICES + deviceId,"DELETE",null);
+        return getResult(response);
+    }
+    public static boolean deleteRoom(String roomId) throws IOException {
+        String response = requestURL(BASE_URL + ROOMS + roomId,"DELETE",null);
+        return getResult(response);
+    }
+    public static boolean deleteRoutine(String routineId) throws IOException {
+        String response = requestURL(BASE_URL + ROUTINES + routineId,"DELETE",null);
+        return getResult(response);
+    }
 }

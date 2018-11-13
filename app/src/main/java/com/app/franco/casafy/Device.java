@@ -16,6 +16,7 @@ public class Device {
         this.type = type;
         this.meta = meta;
     }
+
     public Device(String name, DeviceType type){
         this.name = name;
         this.id = null;
