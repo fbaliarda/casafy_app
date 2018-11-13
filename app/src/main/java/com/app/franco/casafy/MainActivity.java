@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
                     List<Device> devices = ApiManager.getDevices();
                     for (Device device : devices)
                         Log.d("ROUTINES", device.toString());
-                    boolean b = ApiManager.deleteRoutine("9b63a3e785f47145");
-                    Log.d("AAAAAAAAAAAAAAAAA",String.valueOf(b));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
