@@ -19,6 +19,15 @@ public class Routine {
         this.actions = actions;
     }
 
+    public String getName() {
+        return name;
+    }
+    public String getId() {
+        return id;
+    }
+    public List<Action> getActions() {
+        return actions;
+    }
     @Override
     public String toString() {
         return "name: " + name + ", id: " + id + ", actions: " + actions;

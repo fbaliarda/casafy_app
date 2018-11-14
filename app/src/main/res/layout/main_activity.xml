@@ -31,8 +31,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <ListView
+        android:id="@+id/main_list"
         android:layout_width="368dp"
         android:layout_height="313dp"
         android:layout_marginStart="8dp"

@@ -98,6 +98,7 @@ public abstract class ApiManager {
         String listJSON = getJSONList(roomsJSON,"rooms");
         if(listJSON == null)
             return null;
+        listJSON = setMetaJSON(listJSON);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Room>>() {}.getType();
         return gson.fromJson(listJSON, listType);
