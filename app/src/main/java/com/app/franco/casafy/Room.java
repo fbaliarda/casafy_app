@@ -1,6 +1,10 @@
 package com.app.franco.casafy;
 
-public class Room {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Room implements Serializable {
 
     private String name;
     private String id;
@@ -29,5 +33,14 @@ public class Room {
     @Override
     public String toString() {
         return "name: " + name + ", id: " + id + ", meta: {" + meta + "}";
+    }
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj)
+            return true;
+        if(!(obj instanceof Room))
+            return false;
+        Room other = (Room)obj;
+        return this.id.equals(other.id);
     }
 }

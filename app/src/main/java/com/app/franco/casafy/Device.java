@@ -40,4 +40,13 @@ public class Device {
     public String toString() {
         return "name: " + name + ", id: " + id + ", typeId: " + type + ", meta: " + meta;
     }
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj)
+            return true;
+        if(!(obj instanceof Device))
+            return false;
+        Device other = (Device)obj;
+        return this.id.equals(other.id);
+    }
 }

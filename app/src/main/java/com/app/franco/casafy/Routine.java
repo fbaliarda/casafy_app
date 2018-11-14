@@ -32,4 +32,14 @@ public class Routine {
     public String toString() {
         return "name: " + name + ", id: " + id + ", actions: " + actions;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj)
+            return true;
+        if(!(obj instanceof Routine))
+            return false;
+        Routine other = (Routine)obj;
+        return this.id.equals(other.id);
+    }
 }

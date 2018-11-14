@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/routine_name"
-        android:layout_width="205dp"
+        android:layout_width="233dp"
         android:layout_height="107dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -21,10 +21,10 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginLeft="45dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintStart_toEndOf="@+id/routine_name"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop"
         app:srcCompat="@android:drawable/ic_media_play" />
 
@@ -32,9 +32,9 @@
         android:id="@+id/imageButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toEndOf="@+id/routine_name"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
         app:layout_constraintTop_toBottomOf="@+id/imageButton"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
@@ -42,15 +42,15 @@
         android:id="@+id/imageButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton"
         app:srcCompat="@android:drawable/ic_delete" />
 
     <View
         android:id="@+id/dividerTop"
-        android:layout_width="368dp"
+        android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -61,7 +61,7 @@
 
     <View
         android:id="@+id/dividerBottom"
-        android:layout_width="368dp"
+        android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"

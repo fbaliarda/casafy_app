@@ -1,6 +1,8 @@
 package com.app.franco.casafy;
 
-public class Meta {
+import java.io.Serializable;
+
+public class Meta implements Serializable {
     private boolean isFavourite;
     private String image;
 

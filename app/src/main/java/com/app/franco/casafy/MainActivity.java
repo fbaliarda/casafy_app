@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         new AdapterLoader().execute(routineAdapter);
 
     }
-
     private class AdapterLoader extends AsyncTask<ArrayAdapter,Void,ArrayAdapter>{
 
         @Override

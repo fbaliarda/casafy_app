@@ -18,7 +18,9 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public abstract class ApiManager {
@@ -28,6 +30,9 @@ public abstract class ApiManager {
     private static final String DEVICES = "devices/";
     private static final String ROUTINES = "routines/";
     private static final int TIMEOUT = 5000;
+    private static final Set<Room> roomsCache = new HashSet<>();
+    private static final Set<Device> devicesCache = new HashSet<>();
+    private static final Set<Routine> routinesCache = new HashSet<>();
 
     private static String requestURL(String urlString, String requestMethod, String body) throws IOException{
         HttpURLConnection urlConnection = null;
@@ -93,6 +98,20 @@ public abstract class ApiManager {
         return json.replace("}\"","}");
     }
 
+    public static void updateCache() throws IOException {
+        getRooms();
+        getDevices();
+        getRoutines();
+    }
+    public static Set<Room> getRoomsCache() {
+        return roomsCache;
+    }
+    public static Set<Device> getDevicesCache() {
+        return devicesCache;
+    }
+    public static Set<Routine> getRoutinesCache() {
+        return routinesCache;
+    }
     public static List<Room> getRooms() throws IOException {
         String roomsJSON = requestURL(BASE_URL + ROOMS,"GET",null);
         String listJSON = getJSONList(roomsJSON,"rooms");
@@ -101,6 +120,7 @@ public abstract class ApiManager {
         listJSON = setMetaJSON(listJSON);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Room>>() {}.getType();
+        roomsCache.addAll((List<Room>)gson.fromJson(listJSON,listType));
         return gson.fromJson(listJSON, listType);
     }
     public static List<Device> getDevices(String roomId) throws IOException {
@@ -116,6 +136,7 @@ public abstract class ApiManager {
         listJSON = setMetaJSON(listJSON);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Device>>() {}.getType();
+        devicesCache.addAll((List<Device>)gson.fromJson(listJSON,listType));
         return gson.fromJson(listJSON, listType);
     }
     public static List<Device> getDevices() throws IOException {
@@ -128,6 +149,7 @@ public abstract class ApiManager {
             return null;
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Routine>>() {}.getType();
+        routinesCache.addAll((List<Routine>)gson.fromJson(listJSON,listType));
         return gson.fromJson(listJSON, listType);
     }
 
@@ -149,6 +171,7 @@ public abstract class ApiManager {
                 String jsonDevice = resultJSON.get("device").toString();
                 jsonDevice = setMetaJSON(jsonDevice);
                 Device createdDevice = gson.fromJson(jsonDevice,deviceType);
+                devicesCache.add(createdDevice);
                 //Pasa el dispositivo al cuarto pasado como parametro.
                 String url = BASE_URL + DEVICES + createdDevice.getId() + "/" + ROOMS + roomId;
                 result = requestURL(url,"POST",null);
@@ -185,7 +208,9 @@ public abstract class ApiManager {
                 Type roomType = new TypeToken<Room>() {}.getType();
                 String jsonRoom = resultJSON.get("room").toString();
                 jsonRoom = setMetaJSON(jsonRoom);
-                return gson.fromJson(jsonRoom,roomType);
+                Room createdRoom = gson.fromJson(jsonRoom,roomType);
+                roomsCache.add(createdRoom);
+                return createdRoom;
             }
         }
         catch (JSONException e) {
@@ -218,7 +243,9 @@ public abstract class ApiManager {
                 Type routineType = new TypeToken<Routine>() {}.getType();
                 String jsonRoutine = resultJSON.get("routine").toString();
                 jsonRoutine = setMetaJSON(jsonRoutine);
-                return gson.fromJson(jsonRoutine,routineType);
+                Routine createdRoutine = gson.fromJson(jsonRoutine,routineType);
+                routinesCache.add(createdRoutine);
+                return createdRoutine;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -227,14 +254,35 @@ public abstract class ApiManager {
     }
     public static boolean deleteDevice(String deviceId) throws IOException {
         String response = requestURL(BASE_URL + DEVICES + deviceId,"DELETE",null);
+        if(getResult(response)){
+            Device deletedDevice = null;
+            for(Device device : devicesCache)
+                if(device.getId().equals(deviceId))
+                    deletedDevice = device;
+            devicesCache.remove(deletedDevice);
+        }
         return getResult(response);
     }
     public static boolean deleteRoom(String roomId) throws IOException {
         String response = requestURL(BASE_URL + ROOMS + roomId,"DELETE",null);
+        if(getResult(response)){
+            Room deletedRoom = null;
+            for(Room room : roomsCache)
+                if(room.getId().equals(roomId))
+                    deletedRoom = room;
+            roomsCache.remove(deletedRoom);
+        }
         return getResult(response);
     }
     public static boolean deleteRoutine(String routineId) throws IOException {
         String response = requestURL(BASE_URL + ROUTINES + routineId,"DELETE",null);
+        if(getResult(response)){
+            Routine deletedRoutine = null;
+            for(Routine routine : routinesCache)
+                if(routine.getId().equals(routineId))
+                    deletedRoutine = routine;
+            routinesCache.remove(deletedRoutine);
+        }
         return getResult(response);
     }
 }
