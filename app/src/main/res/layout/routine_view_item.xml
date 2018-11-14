@@ -12,7 +12,7 @@
         android:layout_height="107dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="14dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
         android:layout_marginLeft="45dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toEndOf="@+id/routine_name"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop"
         app:srcCompat="@android:drawable/ic_media_play" />
