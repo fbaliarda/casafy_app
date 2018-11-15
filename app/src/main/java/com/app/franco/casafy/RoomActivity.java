@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.app.franco.casafy.adapters.DeviceArrayAdapter;
 import com.app.franco.casafy.adapters.RoomArrayAdapter;
@@ -22,6 +23,7 @@ import java.util.Set;
 
 public class RoomActivity extends AppCompatActivity {
 
+    private TextView title;
     private Room room;
     private DeviceArrayAdapter deviceAdapter;
     @Override
@@ -31,6 +33,7 @@ public class RoomActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.title = findViewById(R.id.room_name);
 
         Intent intent = getIntent();
         if(intent != null){
@@ -66,6 +69,8 @@ public class RoomActivity extends AppCompatActivity {
             ListView list = (ListView)findViewById(R.id.device_list);
             if(list != null)
                 list.setAdapter(deviceAdapter);
+            title.setText(room.getName());
+
         }
     }
 }

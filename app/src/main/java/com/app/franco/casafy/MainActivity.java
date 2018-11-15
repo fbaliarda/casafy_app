@@ -20,6 +20,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static int selectedItemId = R.id.navigation_routines;
     private TextView title;
     private RoomArrayAdapter roomAdapter;
     private RoutineArrayAdapter routineAdapter;
@@ -31,14 +32,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             ListView list = (ListView)findViewById(R.id.main_list);
             list.setAdapter(null);
-            switch (item.getItemId()) {
+            MainActivity.selectedItemId = item.getItemId();
+            switch (MainActivity.selectedItemId) {
                 case R.id.navigation_routines:
-                    title.setText(R.string.title_routines);
-                    new AdapterLoader().execute(routineAdapter);
+                    loadRoutines();
                     return true;
                 case R.id.navigation_devices:
-                    title.setText(R.string.title_devices);
-                    new AdapterLoader().execute(roomAdapter);
+                    loadRooms();
                     return true;
                 default: return false;
             }
@@ -55,8 +55,16 @@ public class MainActivity extends AppCompatActivity {
         routineAdapter = new RoutineArrayAdapter(MainActivity.this,new ArrayList<Routine>());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        new AdapterLoader().execute(routineAdapter);
+        navigation.setSelectedItemId(selectedItemId);
+    }
 
+    public void loadRoutines() {
+        title.setText(R.string.title_routines);
+        new AdapterLoader().execute(routineAdapter);
+    }
+    public void loadRooms() {
+        title.setText(R.string.title_devices);
+        new AdapterLoader().execute(roomAdapter);
     }
     private class AdapterLoader extends AsyncTask<ArrayAdapter,Void,ArrayAdapter>{
 
