@@ -3,6 +3,8 @@ package com.app.franco.casafy;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -28,6 +30,7 @@ public abstract class ApiManager {
     private static final String BASE_URL = "http://10.0.2.2:8080/api/";
     private static final String ROOMS = "rooms/";
     private static final String DEVICES = "devices/";
+    private static final String DEVICE_TYPES = "devicetypes/";
     private static final String ROUTINES = "routines/";
     private static final int TIMEOUT = 5000;
     private static final Set<Room> roomsCache = new HashSet<>();
@@ -151,6 +154,36 @@ public abstract class ApiManager {
         Type listType = new TypeToken<ArrayList<Routine>>() {}.getType();
         routinesCache.addAll((List<Routine>)gson.fromJson(listJSON,listType));
         return gson.fromJson(listJSON, listType);
+    }
+
+    public static JSONArray getActions(String typeId) throws IOException {
+        String actionsJSON;
+        actionsJSON = requestURL(BASE_URL + DEVICE_TYPES + typeId,"GET",null);
+        JSONObject jsonObj;
+        JSONArray jsonArray;
+        try {
+            jsonObj = new JSONObject(actionsJSON);
+            jsonObj = jsonObj.getJSONObject("device");
+            jsonArray = jsonObj.getJSONArray("actions");
+            return jsonArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static JSONObject getState(String deviceId) throws IOException {
+        String resultJSON;
+        resultJSON = requestURL(BASE_URL + DEVICES + deviceId + "/getState","PUT",null);
+        JSONObject jsonObj;
+        try {
+            jsonObj = new JSONObject(resultJSON);
+            jsonObj = jsonObj.getJSONObject("result");
+            return jsonObj;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Device createDevice(String name,String roomId,DeviceType type) throws IOException {

@@ -4,4 +4,12 @@
     <string name="title_devices">Dispositivos</string>
     <string name="enter">Entrar</string>
     <string name="title_activity_room">RoomActivity</string>
+    <string name="title_activity_device_settings">Configurar dispositivo</string>
+    <string name="closed">Cerrada</string>
+    <string name="opened">Abierta</string>
+    <string name="locked">Bloqueada</string>
+    <string name="unlocked">Desbloqueada</string>
+    <string name="off">Apagado</string>
+    <string name="on">Encendido</string>
+    <string name="mode">Modo</string>
 </resources>

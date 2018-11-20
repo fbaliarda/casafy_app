@@ -1,6 +1,8 @@
 package com.app.franco.casafy.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +12,27 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.Device;
+import com.app.franco.casafy.DeviceSettingsActivity;
 import com.app.franco.casafy.R;
-import com.app.franco.casafy.Room;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public class DeviceArrayAdapter extends ArrayAdapter<Device> {
+
+    public static final String DEVICE_VALUE = "device";
+    public static final String DEVICE_TYPE_VALUE = "deviceType";
+    public static final String DEVICE_NAME_VALUE = "deviceName";
 
     private class ViewHolder {
         private ImageView image;
         private TextView name;
         private Switch onSwitch;
+        private ImageView editDevice;
     }
     public DeviceArrayAdapter(Activity context, List<Device> devices){
         super(context,R.layout.device_view_item,devices);
@@ -36,14 +47,40 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
             holder.image = (ImageView) convertView.findViewById(R.id.device_icon);
             holder.name = (TextView) convertView.findViewById(R.id.device_name);
             holder.onSwitch = (Switch)convertView.findViewById(R.id.on_switch);
+            holder.editDevice = (ImageView)convertView.findViewById(R.id.edit_device);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
 
-        Device device = getItem(position);
+        final Device device = getItem(position);
         holder.image.setImageResource(R.mipmap.ic_launcher);
         holder.name.setText(device.getName());
+        holder.editDevice.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                new DeviceLoader().execute(device);
+            }
+        });
 
         return convertView;
+    }
+
+    private class DeviceLoader extends AsyncTask<Device,Void,Device> {
+
+        @Override
+        protected Device doInBackground(Device... devices) {
+            return devices[0];
+        }
+
+        @Override
+        public void onPostExecute(Device device){
+            if(device == null)
+                return;
+            Intent intent = new Intent(getContext(),DeviceSettingsActivity.class);
+            intent.putExtra(DEVICE_VALUE,device.getId());
+            intent.putExtra(DEVICE_TYPE_VALUE,device.getType().getTypeId());
+            intent.putExtra(DEVICE_NAME_VALUE,device.getName());
+            getContext().startActivity(intent);
+        }
     }
 }

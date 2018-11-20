@@ -3,7 +3,6 @@ package com.app.franco.casafy.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.franco.casafy.ApiManager;
+import com.app.franco.casafy.DeviceSettingsActivity;
 import com.app.franco.casafy.R;
 import com.app.franco.casafy.Room;
 import com.app.franco.casafy.RoomActivity;

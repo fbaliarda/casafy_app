@@ -30,6 +30,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.app.franco.casafy.MainActivity" />
         </activity>
+        <activity
+            android:name=".DeviceSettingsActivity"
+            android:label="@string/title_activity_device_settings"
+            android:parentActivityName=".RoomActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.franco.casafy.RoomActivity" />
+        </activity>
     </application>
 
 </manifest>

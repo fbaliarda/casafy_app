@@ -36,6 +36,10 @@ public enum DeviceType {
         this.image = image;
     }
 
+    public String getTypeId() {
+        return typeId;
+    }
+
     public String getImage() {
         return image;
     }
