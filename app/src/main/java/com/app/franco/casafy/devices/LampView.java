@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.DeviceType;
 import com.app.franco.casafy.R;
 

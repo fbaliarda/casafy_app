@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_routines:
                     loadRoutines();
                     return true;
-                case R.id.navigation_devices:
+                case R.id.navigation_rooms:
                     loadRooms();
                     return true;
                 default: return false;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         new AdapterLoader().execute(routineAdapter);
     }
     public void loadRooms() {
-        title.setText(R.string.title_devices);
+        title.setText(R.string.title_rooms);
         new AdapterLoader().execute(roomAdapter);
     }
     private class AdapterLoader extends AsyncTask<ArrayAdapter,Void,ArrayAdapter>{

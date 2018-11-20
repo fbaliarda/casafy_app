@@ -3,8 +3,6 @@ package com.app.franco.casafy;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -141,6 +139,22 @@ public abstract class ApiManager {
         Type listType = new TypeToken<ArrayList<Device>>() {}.getType();
         devicesCache.addAll((List<Device>)gson.fromJson(listJSON,listType));
         return gson.fromJson(listJSON, listType);
+    }
+    public static Device getDevice(String deviceId) throws IOException {
+        String deviceJSON;
+        deviceJSON = requestURL(BASE_URL + DEVICES + deviceId, "GET", null);
+        String device;
+        try {
+            JSONObject jsonObj = new JSONObject(deviceJSON);
+            device = jsonObj.getString("device");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        device = setMetaJSON(device);
+        Gson gson = new Gson();
+        return gson.fromJson(device, Device.class);
     }
     public static List<Device> getDevices() throws IOException {
         return getDevices(null);

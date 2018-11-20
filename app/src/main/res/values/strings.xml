@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Casafy</string>
     <string name="title_routines">Rutinas</string>
-    <string name="title_devices">Dispositivos</string>
+    <string name="title_rooms">Habitaciones</string>
     <string name="enter">Entrar</string>
     <string name="title_activity_room">RoomActivity</string>
     <string name="title_activity_device_settings">Configurar dispositivo</string>
