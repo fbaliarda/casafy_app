@@ -12,6 +12,7 @@ import com.app.franco.casafy.devices.DeviceView;
 import com.app.franco.casafy.devices.DoorView;
 import com.app.franco.casafy.devices.AcView;
 import com.app.franco.casafy.devices.LampView;
+import com.app.franco.casafy.devices.OvenView;
 import com.app.franco.casafy.devices.RefrigeratorView;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
@@ -23,7 +24,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_settings);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.linearLayout = findViewById(R.id.device_settings_list);
         this.title = findViewById(R.id.device_name);
@@ -49,6 +49,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                     device = new RefrigeratorView(deviceStrings[1], DeviceSettingsActivity.this, getLayoutInflater());
                 } else if (deviceTypeId.equals(DeviceType.LAMP.getTypeId())) {
                     device = new LampView(deviceStrings[1], DeviceSettingsActivity.this, getLayoutInflater());
+                } else if (deviceTypeId.equals(DeviceType.OVEN.getTypeId())) {
+                    device = new OvenView(deviceStrings[1], DeviceSettingsActivity.this, getLayoutInflater());
                 }
 
                 return device;

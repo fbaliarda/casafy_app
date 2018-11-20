@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/room_name"
-        android:layout_width="382dp"
+        android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="6dp"
         android:text="TextView"
         android:textAllCaps="false"
@@ -20,11 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <ListView
-            android:id="@+id/device_list"
-            android:layout_width="410dp"
-            android:layout_height="410dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/room_name"></ListView>
+    <ListView
+        android:id="@+id/device_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ListView>
+
 </android.support.constraint.ConstraintLayout>

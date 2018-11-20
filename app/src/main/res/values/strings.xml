@@ -12,4 +12,23 @@
     <string name="off">Apagado</string>
     <string name="on">Encendido</string>
     <string name="mode">Modo</string>
+    <string name="horizontalSwing">Swing horizontal</string>
+    <string name="verticalSwing">Swing vertical</string>
+    <string name="fanSpeed">Velocidad ventilador</string>
+    <string name="heat">Calor</string>
+    <string name="convection">Convección</string>
+    <string name="grill">Grill</string>
+    <string name="setTemperature">Temperatura (°C)</string>
+    <string name="setFreezerTemperature">Temperatura del freezer (°C)</string>
+    <string name="setBrightness">Brillo</string>
+    <string name="conventional">Convencional</string>
+    <string name="top">Arriba</string>
+    <string name="bottom">Abajo</string>
+    <string name="normal">Normal</string>
+    <string name="eco">Ecológico</string>
+    <string name="large">Grande</string>
+    <string name="auto">Auto</string>
+    <string name="cool">Frío</string>
+    <string name="fan">Ventilador</string>
+    <string name="save">Guardar</string>
 </resources>

@@ -1,12 +1,11 @@
 package com.app.franco.casafy.devices;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -44,11 +43,12 @@ public abstract class DeviceView {
         int arrayLength = jsonArray.length();
 
         for (int i = 0; i < arrayLength; i++) {
-            if (jsonArray.getJSONObject(i).getJSONArray("params").length() > 0 &&
-                    jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getString("type").equals("string")) {
-                spinnersMap.put(jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getString("name"),
-                        loadSpinner(jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getJSONArray("supportedValues"),
-                                context, layoutInflater, jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getString("name")));
+            JSONObject curr = jsonArray.getJSONObject(i);
+            JSONArray params = curr.getJSONArray("params");
+            if (params.length() > 0 && params.getJSONObject(0).getString("type").equals("string")) {
+                spinnersMap.put(params.getJSONObject(0).getString("name"),
+                        loadSpinner(params.getJSONObject(0).getJSONArray("supportedValues"),
+                                context, layoutInflater, params.getJSONObject(0).getString("name")));
             }
         }
     }
@@ -57,17 +57,36 @@ public abstract class DeviceView {
         View spinnerView = layoutInflater.inflate(R.layout.content_spinner, null);
         Spinner spinner = spinnerView.findViewById(R.id.spinner);
         TextView spinnerText = spinnerView.findViewById(R.id.spinnerText);
-        if (spinnerText != null) spinnerText.setText(name);
+        spinnerText.setText(byIdName(context, name));
 
-        List<String> listParams = new ArrayList<>();
+        List<SpinnerItem> listParams = new ArrayList<>();
         int numParams = arrayParams.length();
 
         for (int j = 0; j < numParams; j++) {
-            listParams.add(arrayParams.getString(j));
+            listParams.add(new SpinnerItem(arrayParams.getString(j), byIdName(context, arrayParams.getString(j))));
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, listParams);
+        ArrayAdapter<SpinnerItem> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, listParams);
         spinner.setAdapter(arrayAdapter);
         return spinnerView;
+    }
+
+    private class SpinnerItem {
+        String itemId;
+        String itemText;
+
+        SpinnerItem(String itemId, String itemText) {
+            this.itemId = itemId;
+            this.itemText = itemText;
+        }
+
+        @Override
+        public String toString() {
+            return itemText;
+        }
+
+        String getItemId() {
+            return itemId;
+        }
     }
 
     void loadSeekbars(String typeId, Map<String, SeekbarView> seekbarsMap, Context context, LayoutInflater layoutInflater) throws IOException, JSONException {
@@ -76,22 +95,21 @@ public abstract class DeviceView {
         int arrayLength = jsonArray.length();
 
         for (int i = 0; i < arrayLength; i++) {
-            if (jsonArray.getJSONObject(i).getJSONArray("params").length() > 0 &&
-                    !jsonArray.getJSONObject(i).getString("name").equals("setMode") &&
-                    (jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getString("type").equals("number") ||
-                            jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getString("type").equals("integer"))) {
-                seekbarsMap.put(jsonArray.getJSONObject(i).getString("name"),
-                        loadSeekbar(jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getInt("minValue"),
-                                jsonArray.getJSONObject(i).getJSONArray("params").getJSONObject(0).getInt("maxValue"),
-                                context, layoutInflater, jsonArray.getJSONObject(i).getString("name")));
+            JSONObject curr = jsonArray.getJSONObject(i);
+            JSONArray params = curr.getJSONArray("params");
+            if (params.length() > 0 && !curr.getString("name").equals("setMode") &&
+                    (params.getJSONObject(0).getString("type").equals("number") ||
+                           params.getJSONObject(0).getString("type").equals("integer"))) {
+                seekbarsMap.put(curr.getString("name"), loadSeekbar(params.getJSONObject(0).getInt("minValue"),
+                        params.getJSONObject(0).getInt("maxValue"), context, layoutInflater, byIdName(context, curr.getString("name"))));
             }
         }
     }
 
-    private SeekbarView loadSeekbar(int minValue, int maxValue, Context context, LayoutInflater layoutInflater, final String name) {
+    private SeekbarView loadSeekbar(int minValue, int maxValue, Context context, LayoutInflater layoutInflater, final String text) {
         View seekbarView = layoutInflater.inflate(R.layout.content_seekbar, null);
 
-        return new SeekbarView(seekbarView, minValue, maxValue, name);
+        return new SeekbarView(seekbarView, minValue, maxValue, text);
     }
 
     void loadCurrentSpinners(Map<String, View> spinnersMap) throws JSONException{
@@ -103,7 +121,7 @@ public abstract class DeviceView {
                 Spinner spinner = spinnersMap.get(next).findViewById(R.id.spinner);
 
                 for (int i = 0; i < spinner.getCount(); i++) {
-                    if (spinner.getItemAtPosition(i).equals(state.getString(next))) {
+                    if (((SpinnerItem)spinner.getItemAtPosition(i)).getItemId().equals(state.getString(next))) {
                         spinner.setSelection(i);
                         break;
                     }
@@ -121,6 +139,17 @@ public abstract class DeviceView {
             if (seekbarsMap.containsKey(aux)) {
                 seekbarsMap.get(aux).setValue(state.getInt(next));
             }
+        }
+    }
+
+    private static String byIdName(Context context, String name) {
+        Resources res = context.getResources();
+        int resId = res.getIdentifier(name, "string", context.getPackageName());
+
+        if (resId == 0 || String.valueOf(resId).equals(name)) {
+            return name;
+        } else {
+            return res.getString(resId);
         }
     }
 }
