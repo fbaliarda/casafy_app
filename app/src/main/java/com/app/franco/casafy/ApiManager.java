@@ -27,7 +27,7 @@ import java.util.Set;
 
 public abstract class ApiManager {
 
-    private static final String BASE_URL = "http://192.168.1.104:8080/api/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/api/";
     private static final String ROOMS = "rooms/";
     private static final String DEVICES = "devices/";
     private static final String DEVICE_TYPES = "devicetypes/";
@@ -171,7 +171,19 @@ public abstract class ApiManager {
             return null;
         }
     }
-
+    public static void putAction(String deviceId, Action action) throws IOException {
+        Gson gson = new Gson();
+        List<String> params = action.getParams();
+        String paramsJSON = gson.toJson(params);
+        String result = requestURL(BASE_URL + DEVICES + deviceId + '/' + action,"PUT",paramsJSON);
+        try {
+            JSONObject resultJSON = new JSONObject(result);
+            if(resultJSON.has("result") && resultJSON.get("result") == null)
+                throw new IOException();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public static JSONObject getState(String deviceId) throws IOException {
         String resultJSON;
         resultJSON = requestURL(BASE_URL + DEVICES + deviceId + "/getState","PUT",null);

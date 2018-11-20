@@ -14,6 +14,9 @@ public class Action {
         this.params = params;
     }
 
+    public List<String> getParams() {
+        return params;
+    }
     @Override
     public String toString() {
         return "name: " + actionName + ", id: " + deviceId + ", params: " + params;

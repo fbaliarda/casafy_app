@@ -3,13 +3,9 @@ package com.app.franco.casafy;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,9 +19,9 @@ import java.util.Set;
 
 public class RoomActivity extends AppCompatActivity {
 
+    private static Room room;
+    private static DeviceArrayAdapter deviceAdapter;
     private TextView title;
-    private Room room;
-    private DeviceArrayAdapter deviceAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +32,13 @@ public class RoomActivity extends AppCompatActivity {
         this.title = findViewById(R.id.room_name);
 
         Intent intent = getIntent();
-        if(intent != null){
+        if(intent != null && intent.hasExtra(RoomArrayAdapter.ROOM_VALUE)){
             String roomId = intent.getStringExtra(RoomArrayAdapter.ROOM_VALUE);
             deviceAdapter = new DeviceArrayAdapter(RoomActivity.this,new ArrayList<Device>());
             new ActivityLoader().execute(roomId);
         }
+        else
+            new ActivityLoader().execute(room.getId());
     }
 
     private class ActivityLoader extends AsyncTask<String,Void,List<Device>> {
