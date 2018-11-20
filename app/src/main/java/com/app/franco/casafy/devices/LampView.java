@@ -58,6 +58,8 @@ public class LampView extends DeviceView {
             } else {
                 switch1.setChecked(true);
             }
+
+            loadCurrentSeekbars(seekbarsMap);
         } catch (Exception e) {
             e.printStackTrace();
             return;

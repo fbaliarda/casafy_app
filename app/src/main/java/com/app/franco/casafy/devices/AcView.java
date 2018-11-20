@@ -17,6 +17,7 @@ import java.util.Map;
 public class AcView extends DeviceView {
     private View onOffSwitch;
     private Map<String, View> spinnersMap = new HashMap<>();
+    private Map<String, SeekbarView> seekbarsMap = new HashMap<>();
 
     public AcView(String deviceId, Context context, LayoutInflater layoutInflater) throws IOException {
         super(deviceId);
@@ -33,6 +34,10 @@ public class AcView extends DeviceView {
     public void addViews(ViewGroup viewGroup) {
         viewGroup.addView(onOffSwitch);
 
+        for (SeekbarView seekbarView: seekbarsMap.values()) {
+            viewGroup.addView(seekbarView.getView());
+        }
+
         for (View view: spinnersMap.values()) {
             viewGroup.addView(view);
         }
@@ -43,6 +48,7 @@ public class AcView extends DeviceView {
     private void loadSettings(Context context, LayoutInflater layoutInflater) {
         try {
             loadSpinners(DeviceType.AC.getTypeId(), spinnersMap, context, layoutInflater);
+            loadSeekbars(DeviceType.AC.getTypeId(), seekbarsMap, context, layoutInflater);
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -59,6 +65,7 @@ public class AcView extends DeviceView {
             }
 
             loadCurrentSpinners(spinnersMap);
+            loadCurrentSeekbars(seekbarsMap);
         } catch (Exception e) {
             e.printStackTrace();
             return;

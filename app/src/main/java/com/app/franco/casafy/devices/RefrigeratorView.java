@@ -22,11 +22,22 @@ public class RefrigeratorView extends DeviceView {
         for (SeekbarView seekbarView: seekbarsMap.values()) {
             viewGroup.addView(seekbarView.getView());
         }
+
+        loadCurrentSettings();
     }
 
     private void loadSettings(Context context, LayoutInflater layoutInflater) {
         try {
             loadSeekbars(DeviceType.REFRIGERATOR.getTypeId(), seekbarsMap, context, layoutInflater);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    private void loadCurrentSettings() {
+        try {
+            loadCurrentSeekbars(seekbarsMap);
         } catch (Exception e) {
             e.printStackTrace();
             return;

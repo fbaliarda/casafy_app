@@ -30,7 +30,7 @@ public class SeekbarView {
         seekBarElem.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarText.setText(String.format(Locale.US, "%s: %d", name, seekBarElem.getProgress() + min));
+                seekBarText.setText(String.format(Locale.US, "%s: %d", name, getValue()));
             }
 
             @Override
@@ -47,6 +47,10 @@ public class SeekbarView {
 
     int getValue() {
         return min + seekBarElem.getProgress();
+    }
+
+    void setValue(int value) {
+        seekBarElem.setProgress(value - min);
     }
 
     SeekBar getSeekBar() {

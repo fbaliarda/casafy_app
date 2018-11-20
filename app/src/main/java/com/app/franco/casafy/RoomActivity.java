@@ -41,7 +41,6 @@ public class RoomActivity extends AppCompatActivity {
             deviceAdapter = new DeviceArrayAdapter(RoomActivity.this,new ArrayList<Device>());
             new ActivityLoader().execute(roomId);
         }
-
     }
 
     private class ActivityLoader extends AsyncTask<String,Void,List<Device>> {

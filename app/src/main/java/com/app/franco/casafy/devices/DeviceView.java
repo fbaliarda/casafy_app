@@ -1,10 +1,12 @@
 package com.app.franco.casafy.devices;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -88,8 +90,6 @@ public abstract class DeviceView {
 
     private SeekbarView loadSeekbar(int minValue, int maxValue, Context context, LayoutInflater layoutInflater, final String name) {
         View seekbarView = layoutInflater.inflate(R.layout.content_seekbar, null);
-        final TextView seekbarText = seekbarView.findViewById(R.id.seekbarText);
-        if (seekbarText != null) seekbarText.setText(name);
 
         return new SeekbarView(seekbarView, minValue, maxValue, name);
     }
@@ -108,6 +108,18 @@ public abstract class DeviceView {
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    void loadCurrentSeekbars(Map<String, SeekbarView> seekbarsMap) throws JSONException{
+        Iterator<String> iterator = state.keys();
+
+        while(iterator.hasNext()) {
+            String next = iterator.next();
+            String aux = "set" + next.substring(0, 1).toUpperCase() + next.substring(1);
+            if (seekbarsMap.containsKey(aux)) {
+                seekbarsMap.get(aux).setValue(state.getInt(next));
             }
         }
     }
