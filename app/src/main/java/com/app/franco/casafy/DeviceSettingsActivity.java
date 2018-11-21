@@ -62,6 +62,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                     device = new LampView(deviceStrings[1], DeviceSettingsActivity.this, getLayoutInflater());
                 } else if (deviceTypeId.equals(DeviceType.OVEN.getTypeId())) {
                     device = new OvenView(deviceStrings[1], DeviceSettingsActivity.this, getLayoutInflater());
+                } else {
+                    device = null;
                 }
 
                 return device;

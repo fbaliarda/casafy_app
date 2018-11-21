@@ -1,7 +1,5 @@
 package com.app.franco.casafy;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

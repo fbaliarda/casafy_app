@@ -24,6 +24,22 @@ public class Device {
         this.meta = new Meta(false,type.getImage());
     }
 
+    public int getIcon() {
+        if (type == DeviceType.REFRIGERATOR) {
+            return R.drawable.ic_fridge;
+        } else if (type == DeviceType.AC) {
+            return R.drawable.ic_ac;
+        } else if (type == DeviceType.LAMP) {
+            return R.drawable.ic_lamp;
+        } else if (type == DeviceType.OVEN) {
+            return R.drawable.ic_oven;
+        } else if (type == DeviceType.DOOR) {
+            return R.drawable.ic_door;
+        }
+
+        return R.drawable.ic_unknown;
+    }
+
     public String getName() {
         return name;
     }

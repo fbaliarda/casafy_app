@@ -40,7 +40,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.room_view_item, parent, false);
             holder = new ViewHolder();
-            holder.image = (ImageView) convertView.findViewById(R.id.device_icon);
+            holder.image = (ImageView) convertView.findViewById(R.id.room_icon);
             holder.name = (TextView) convertView.findViewById(R.id.room_name);
             holder.enterButton = (Button)convertView.findViewById(R.id.enterButton);
             convertView.setTag(holder);
@@ -48,7 +48,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
             holder = (ViewHolder) convertView.getTag();
 
         final Room room = getItem(position);
-        holder.image.setImageResource(R.mipmap.ic_launcher);
+        //holder.image.setImageResource(R.mipmap.ic_launcher);
         holder.name.setText(room.getName());
         holder.enterButton.setOnClickListener(new Button.OnClickListener(){
             @Override

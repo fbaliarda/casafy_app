@@ -47,7 +47,7 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
             holder = (ViewHolder) convertView.getTag();
 
         final Device device = getItem(position);
-        holder.image.setImageResource(R.mipmap.ic_launcher);
+        holder.image.setImageResource(device.getIcon());
         holder.name.setText(device.getName());
         holder.editDevice.setOnClickListener(new Button.OnClickListener(){
             @Override
