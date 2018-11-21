@@ -342,4 +342,14 @@ public abstract class ApiManager {
         }
         return getResult(response);
     }
+    public static void executeRoutine(String routineId) throws IOException {
+        String result = requestURL(BASE_URL + ROUTINES + routineId + "/execute","PUT",null);
+        try {
+            JSONObject resultJSON = new JSONObject(result);
+            if(resultJSON.has("error"))
+                throw new IOException();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
