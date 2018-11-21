@@ -43,4 +43,8 @@ public class RefrigeratorView extends DeviceView {
             return;
         }
     }
+
+    public void saveCurrentSettings() throws IOException {
+        saveCurrentSeekbars(seekbarsMap);
+    }
 }

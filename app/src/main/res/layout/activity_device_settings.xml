@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnSave"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="165dp"
         android:layout_height="44dp"

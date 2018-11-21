@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.app.franco.casafy.Action;
+import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.DeviceType;
 import com.app.franco.casafy.R;
 
@@ -70,5 +72,17 @@ public class OvenView extends DeviceView {
             e.printStackTrace();
             return;
         }
+    }
+
+    public void saveCurrentSettings() throws IOException{
+        Switch switch1 = onOffSwitch.findViewById(R.id.state_switch);
+        if (switch1.isChecked()) {
+            ApiManager.putAction(deviceId, new Action("turnOn", deviceId, null));
+        } else {
+            ApiManager.putAction(deviceId, new Action("turnOff", deviceId, null));
+        }
+
+        saveCurrentSpinners(spinnersMap);
+        saveCurrentSeekbars(seekbarsMap);
     }
 }

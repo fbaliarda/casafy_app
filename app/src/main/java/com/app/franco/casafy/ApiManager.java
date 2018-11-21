@@ -189,7 +189,7 @@ public abstract class ApiManager {
         Gson gson = new Gson();
         List<String> params = action.getParams();
         String paramsJSON = gson.toJson(params);
-        String result = requestURL(BASE_URL + DEVICES + deviceId + '/' + action,"PUT",paramsJSON);
+        String result = requestURL(BASE_URL + DEVICES + deviceId + "/" + action.getActionName(),"PUT",paramsJSON);
         try {
             JSONObject resultJSON = new JSONObject(result);
             if(resultJSON.has("result") && resultJSON.get("result") == null)

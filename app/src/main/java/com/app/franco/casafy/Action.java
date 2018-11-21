@@ -14,6 +14,10 @@ public class Action {
         this.params = params;
     }
 
+    public String getActionName() {
+        return actionName;
+    }
+
     public List<String> getParams() {
         return params;
     }

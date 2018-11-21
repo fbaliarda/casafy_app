@@ -1,18 +1,15 @@
 package com.app.franco.casafy.devices;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.app.franco.casafy.Action;
 import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.R;
-
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 public class DoorView extends DeviceView {
@@ -60,6 +57,23 @@ public class DoorView extends DeviceView {
         } catch (Exception e) {
             e.printStackTrace();
             return;
+        }
+    }
+
+
+    public void saveCurrentSettings() throws IOException{
+        Switch switch1 = openedSwitch.findViewById(R.id.state_switch);
+        if (switch1.isChecked()) {
+            ApiManager.putAction(deviceId, new Action("open", deviceId, null));
+        } else {
+            ApiManager.putAction(deviceId, new Action("close", deviceId, null));
+        }
+
+        switch1 = lockedSwitch.findViewById(R.id.state_switch);
+        if (switch1.isChecked()) {
+            ApiManager.putAction(deviceId, new Action("unlock", deviceId, null));
+        } else {
+            ApiManager.putAction(deviceId, new Action("lock", deviceId, null));
         }
     }
 }

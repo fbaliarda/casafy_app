@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.app.franco.casafy.Action;
 import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.R;
 
@@ -36,6 +37,8 @@ public abstract class DeviceView {
     private void getState() throws IOException{
         state = ApiManager.getState(deviceId);
     }
+
+    public abstract void saveCurrentSettings() throws IOException;
 
     void loadSpinners(String typeId, Map<String, View> spinnersMap, Context context, LayoutInflater layoutInflater) throws IOException, JSONException {
         JSONArray jsonArray;
@@ -108,7 +111,6 @@ public abstract class DeviceView {
 
     private SeekbarView loadSeekbar(int minValue, int maxValue, Context context, LayoutInflater layoutInflater, final String text) {
         View seekbarView = layoutInflater.inflate(R.layout.content_seekbar, null);
-
         return new SeekbarView(seekbarView, minValue, maxValue, text);
     }
 
@@ -139,6 +141,24 @@ public abstract class DeviceView {
             if (seekbarsMap.containsKey(aux)) {
                 seekbarsMap.get(aux).setValue(state.getInt(next));
             }
+        }
+    }
+
+    void saveCurrentSpinners(Map<String, View> spinnersMap) throws IOException{
+        for (String string: spinnersMap.keySet()) {
+            String actionName = "set" + string.substring(0, 1).toUpperCase() + string.substring(1);
+            List<String> params = new ArrayList<>();
+            Spinner spinner = spinnersMap.get(string).findViewById(R.id.spinner);
+            params.add(((SpinnerItem)spinner.getSelectedItem()).getItemId());
+            ApiManager.putAction(deviceId, new Action(actionName, deviceId, params));
+        }
+    }
+
+    void saveCurrentSeekbars(Map<String, SeekbarView> seekbarsMap) throws IOException{
+        for (String string: seekbarsMap.keySet()) {
+            List<String> params = new ArrayList<>();
+            params.add(String.valueOf(seekbarsMap.get(string).getValue()));
+            ApiManager.putAction(deviceId, new Action(string, deviceId, params));
         }
     }
 

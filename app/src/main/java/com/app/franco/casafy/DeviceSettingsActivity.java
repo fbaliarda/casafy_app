@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +21,14 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     private TextView title;
     private LinearLayout linearLayout;
     private DeviceView device;
+    private Button buttonSave;
+
+    View.OnClickListener saveButtonClickHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            new SettingsSaver().execute();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +37,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         this.linearLayout = findViewById(R.id.device_settings_list);
         this.title = findViewById(R.id.device_name);
+        this.buttonSave = findViewById(R.id.btnSave);
 
         Intent intent = getIntent();
         if(intent != null){
@@ -64,7 +75,26 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             if(device == null)
                 return;
 
+            buttonSave.setOnClickListener(saveButtonClickHandler);
             device.addViews(linearLayout);
+        }
+    }
+
+    private class SettingsSaver extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                device.saveCurrentSettings();
+                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        @Override
+        protected void onPostExecute(Void elem) {
+            finish();
         }
     }
 }
