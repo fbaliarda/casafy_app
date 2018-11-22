@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Casafy</string>
+    <string name="app_name" translatable="false">Casafy</string>
     <string name="title_routines">Rutinas</string>
     <string name="title_rooms">Habitaciones</string>
     <string name="enter">Entrar</string>
-    <string name="title_activity_room">RoomActivity</string>
+    <string name="title_activity_room" translatable="false">RoomActivity</string>
     <string name="title_activity_device_settings">Configurar dispositivo</string>
     <string name="closed">Cerrada</string>
     <string name="opened">Abierta</string>
@@ -34,4 +34,5 @@
     <string name="routinePlaying">Ejecutando rutina...</string>
     <string name="routineFinished">¡Rutina ejecutada con exito!</string>
     <string name="connectionFailed">Ha habido un problema al conectar con el servidor.</string>
+    <string name="noDevices">No hay dispositivos en esta habitación.</string>
 </resources>

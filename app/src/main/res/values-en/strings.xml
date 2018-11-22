@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto">Auto</string>
+    <string name="bottom">Bottom</string>
+    <string name="closed">Closed</string>
+    <string name="connectionFailed">There was an error while connecting to the server.</string>
+    <string name="convection">Convection</string>
+    <string name="conventional">Conventional</string>
+    <string name="cool">Cool</string>
+    <string name="eco">Ecological</string>
+    <string name="enter">Enter</string>
+    <string name="fan">Fan</string>
+    <string name="fanSpeed">Fan speed</string>
+    <string name="grill">Grill</string>
+    <string name="heat">Heat</string>
+    <string name="horizontalSwing">Horizontal swing</string>
+    <string name="large">Large</string>
+    <string name="locked">Locked</string>
+    <string name="mode">Mode</string>
+    <string name="normal">Normal</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="opened">Open</string>
+    <string name="routineFinished">Routine has been succesfully executed</string>
+    <string name="routinePlaying">Executing routine...</string>
+    <string name="save">Save</string>
+    <string name="setBrightness">Brightness</string>
+    <string name="setFreezerTemperature">Freezer temperature (°C)</string>
+    <string name="setTemperature">Temperature (°C)</string>
+    <string name="title_activity_device_settings">Device settings</string>
+    <string name="title_rooms">Rooms</string>
+    <string name="title_routines">Routines</string>
+    <string name="top">Top</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="verticalSwing">Vertical swing</string>
+    <string name="noDevices">There are no devices in this room.</string>
+</resources>
