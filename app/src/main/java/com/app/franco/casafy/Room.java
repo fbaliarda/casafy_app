@@ -1,5 +1,7 @@
 package com.app.franco.casafy;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class Room implements Serializable {
     public Room(String name){
         this.name = name;
         this.id = null;
-        this.meta = new Meta(false,"rooms/room.jpg");
+        this.meta = new Meta(true,"rooms/room.jpg");
     }
 
     public String getName() {

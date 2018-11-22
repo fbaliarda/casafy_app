@@ -14,6 +14,8 @@ import com.app.franco.casafy.adapters.RoomArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +23,7 @@ public class RoomActivity extends AppCompatActivity {
 
     private static Room room;
     private static DeviceArrayAdapter deviceAdapter;
-    private TextView title;
+    //private TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,7 @@ public class RoomActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.title = findViewById(R.id.room_name);
+        //this.title = findViewById(R.id.room_name);
 
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RoomArrayAdapter.ROOM_VALUE)){
@@ -51,7 +53,17 @@ public class RoomActivity extends AppCompatActivity {
                     room = r;
             }
             try {
-                return ApiManager.getDevices(roomId[0]);
+                List<Device> sortList = ApiManager.getDevices(roomId[0]);
+                Collections.sort(sortList, new Comparator<Device>() {
+                    @Override
+                    public int compare(Device a, Device b) {
+                        if(a.getMeta().isFavorite() == b.getMeta().isFavorite()) {
+                            return a.getName().compareTo(b.getName());
+                        }
+                        return (!a.getMeta().isFavorite() ? 1 : -1);
+                    }
+                });
+                return sortList;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -64,9 +76,13 @@ public class RoomActivity extends AppCompatActivity {
             deviceAdapter.clear();
             deviceAdapter.addAll(devices);
             ListView list = (ListView)findViewById(R.id.device_list);
-            if(list != null)
+            if(list != null) {
+                list.setEmptyView((TextView)findViewById(R.id.emptyLabel));
                 list.setAdapter(deviceAdapter);
-            title.setText(room.getName());
+            }
+
+
+            getSupportActionBar().setTitle(room.getName());
 
         }
     }

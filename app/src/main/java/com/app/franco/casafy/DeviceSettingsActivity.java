@@ -18,7 +18,7 @@ import com.app.franco.casafy.devices.OvenView;
 import com.app.franco.casafy.devices.RefrigeratorView;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
-    private TextView title;
+    //private TextView title;
     private LinearLayout linearLayout;
     private DeviceView device;
     private Button buttonSave;
@@ -36,12 +36,13 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_settings);
 
         this.linearLayout = findViewById(R.id.device_settings_list);
-        this.title = findViewById(R.id.device_name);
+        //this.title = findViewById(R.id.device_name);
         this.buttonSave = findViewById(R.id.btnSave);
 
         Intent intent = getIntent();
         if(intent != null){
-            title.setText(intent.getStringExtra(DeviceArrayAdapter.DEVICE_NAME_VALUE));
+            getSupportActionBar().setTitle(intent.getStringExtra(DeviceArrayAdapter.DEVICE_NAME_VALUE));
+            //title.setText(intent.getStringExtra(DeviceArrayAdapter.DEVICE_NAME_VALUE));
             new ActivityLoader().execute(intent.getStringExtra(DeviceArrayAdapter.DEVICE_TYPE_VALUE), intent.getStringExtra(DeviceArrayAdapter.DEVICE_VALUE));
         }
     }

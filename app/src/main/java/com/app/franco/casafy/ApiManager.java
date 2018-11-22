@@ -1,5 +1,7 @@
 package com.app.franco.casafy;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -94,7 +96,9 @@ public abstract class ApiManager {
          * de las llaves del atributo "meta" para que quede como un objeto JSON. */
         json = json.replace("\\","");
         json = json.replace("\"{","{");
-        return json.replace("}\"","}");
+        json = json.replace("}\"","}");
+        //Log.d("roomJson", json);
+        return json;
     }
 
     public static void updateCache() throws IOException {

@@ -2,12 +2,15 @@ package com.app.franco.casafy.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +21,10 @@ import com.app.franco.casafy.Room;
 import com.app.franco.casafy.RoomActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RoomArrayAdapter extends ArrayAdapter<Room> {
@@ -29,6 +35,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
         private ImageView image;
         private TextView name;
         private Button enterButton;
+        private ImageButton favoriteButton;
     }
     public RoomArrayAdapter(Activity context, List<Room> rooms){
         super(context,R.layout.room_view_item,rooms);
@@ -43,6 +50,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
             holder.image = (ImageView) convertView.findViewById(R.id.room_icon);
             holder.name = (TextView) convertView.findViewById(R.id.room_name);
             holder.enterButton = (Button)convertView.findViewById(R.id.enterButton);
+            holder.favoriteButton = (ImageButton)convertView.findViewById(R.id.favoriteButton);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
@@ -56,6 +64,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
                 new RoomLoader().execute(room.getName());
             }
         });
+        //holder.favoriteButton
         return convertView;
     }
 
@@ -67,6 +76,7 @@ public class RoomArrayAdapter extends ArrayAdapter<Room> {
             if(rooms == null){
                 try {
                     rooms = ApiManager.getRooms();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
