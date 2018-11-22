@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -187,6 +188,72 @@ public abstract class ApiManager {
             return null;
         }
     }
+    public static List<EventData> getEvents(String deviceId) throws IOException {
+        String result = requestURL(BASE_URL + DEVICES + deviceId + "/events","GET",null);
+
+        return parseEvents(result);
+    }
+
+    private static List<EventData> parseEvents(String result) {
+        String[] words = result.split(" |\\n");
+        boolean readingEvent = false;
+        String previousWord = null;
+        EventData currentEvent = null;
+        List<EventData> eventList = new ArrayList<>();
+        for(String word : words){
+            if(word.contains("data")) {
+                previousWord = word;
+                continue;
+            }
+            if(word.equals("}")){
+                readingEvent = false;
+                eventList.add(new EventData(currentEvent));
+                previousWord = word;
+                continue;
+            }
+            if(word.contains("id")){
+                readingEvent = true;
+                currentEvent = new EventData();
+                previousWord = word;
+                continue;
+            }
+            if(readingEvent){
+                if(previousWord.contains("args")){
+                    //Saco las comillas con las que empieza y termina asi queda como un objeto JSON
+                    word = word.replaceAll("^\"|\"$", "");
+                    try {
+                        JSONObject argsJSON = new JSONObject(word);
+                        Iterator<String> keys = argsJSON.keys();
+                        while(keys.hasNext()){
+                            String key = keys.next();
+                            currentEvent.addArgs(key,argsJSON.get(key).toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                //Saca la comas y las comillas que quedan de mas.
+                word = word.replace(",","");
+                word = word.replaceAll("\"","");
+                if(previousWord.contains("id")) {
+                    currentEvent.setId(word);
+                }
+                else if(previousWord.contains("timestamp")) {
+                    currentEvent.setTimestamp(word);
+                }
+                else if(previousWord.contains("deviceId")) {
+                    currentEvent.setDeviceId(word);
+                }
+                else if(previousWord.contains("event")){
+                    currentEvent.setEvent(word);
+                }
+            }
+            previousWord = word;
+        }
+        return eventList;
+    }
+
     public static void putAction(String deviceId, Action action) throws IOException {
         Gson gson = new Gson();
         List<String> params = action.getParams();
