@@ -33,5 +33,5 @@
     <string name="save">Guardar</string>
     <string name="routinePlaying">Ejecutando rutina...</string>
     <string name="routineFinished">¡Rutina ejecutada con exito!</string>
-    <string name="routineFailed">Ha habido un problema al conectar con el servidor.</string>
+    <string name="connectionFailed">Ha habido un problema al conectar con el servidor.</string>
 </resources>

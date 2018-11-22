@@ -70,7 +70,7 @@ public class RoutineArrayAdapter extends ArrayAdapter<Routine> {
             if(result)
                 Toast.makeText(getContext(),R.string.routineFinished,Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(getContext(),R.string.routineFailed,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),R.string.connectionFailed,Toast.LENGTH_SHORT).show();
         }
     }
 }

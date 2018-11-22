@@ -17,7 +17,7 @@ public class Action {
     public String getActionName() {
         return actionName;
     }
-
+    public String getDeviceId() { return deviceId;}
     public List<String> getParams() {
         return params;
     }
