@@ -5,6 +5,7 @@
     <string name="enter">Entrar</string>
     <string name="title_activity_room" translatable="false">RoomActivity</string>
     <string name="title_activity_device_settings">Configurar dispositivo</string>
+    <string name="favorite">Favorito</string>
     <string name="closed">Cerrada</string>
     <string name="opened">Abierta</string>
     <string name="locked">Bloqueada</string>

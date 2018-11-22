@@ -6,6 +6,7 @@
     <string name="connectionFailed">There was an error while connecting to the server.</string>
     <string name="convection">Convection</string>
     <string name="conventional">Conventional</string>
+    <string name="favorite">Favorite</string>
     <string name="cool">Cool</string>
     <string name="eco">Ecological</string>
     <string name="enter">Enter</string>
