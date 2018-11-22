@@ -42,7 +42,11 @@ public class RoomActivity extends AppCompatActivity {
         else
             new ActivityLoader().execute(room.getId());
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        deviceAdapter.notifyDataSetChanged();
+    }
     private class ActivityLoader extends AsyncTask<String,Void,List<Device>> {
 
         @Override
