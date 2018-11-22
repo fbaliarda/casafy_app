@@ -34,4 +34,5 @@
     <string name="routinePlaying">Ejecutando rutina...</string>
     <string name="routineFinished">¡Rutina ejecutada con exito!</string>
     <string name="connectionFailed">Ha habido un problema al conectar con el servidor.</string>
+    <string name="favorite">"Favorito"</string>
 </resources>

@@ -423,4 +423,15 @@ public abstract class ApiManager {
             e.printStackTrace();
         }
     }
+    public static void updateRoom(Room room) throws IOException {
+        Gson gson = new Gson();
+        try {
+            JSONObject roomJSON = new JSONObject(gson.toJson(room));
+            //Almaceno el meta como un string.
+            roomJSON.put("meta",room.getMeta().toString());
+            requestURL(BASE_URL + ROOMS + room.getId(),"PUT",roomJSON.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

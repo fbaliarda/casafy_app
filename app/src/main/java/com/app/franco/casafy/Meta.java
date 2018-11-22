@@ -16,7 +16,9 @@ public class Meta implements Serializable {
     public boolean isFavorite() {
         return isFavorite;
     }
-
+    public void setFavorite(boolean favorite){
+        this.isFavorite = favorite;
+    }
     public String getImage() {
         return image;
     }

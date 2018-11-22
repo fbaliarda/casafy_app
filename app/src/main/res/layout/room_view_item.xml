@@ -34,18 +34,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop" />
 
-    <ImageButton
-        android:id="@+id/favoriteButton"
-        android:layout_width="33dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dividerTop"
-        app:srcCompat="@android:drawable/btn_star" />
-
     <Button
         android:id="@+id/enterButton"
         style="@style/Widget.AppCompat.Button"
@@ -87,4 +75,13 @@
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterButton" />
+
+    <Switch
+        android:id="@+id/favoriteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Favorito"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividerTop" />
 </android.support.constraint.ConstraintLayout>
