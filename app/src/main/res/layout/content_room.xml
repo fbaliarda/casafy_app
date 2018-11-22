@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="No hay dispositivos en esta habitación"
+        android:text="@string/noDevices"
         android:textColor="@color/colorAccent" />
 
     <ListView
