@@ -48,7 +48,8 @@ public abstract class DeviceView {
         for (int i = 0; i < arrayLength; i++) {
             JSONObject curr = jsonArray.getJSONObject(i);
             JSONArray params = curr.getJSONArray("params");
-            if (params.length() > 0 && params.getJSONObject(0).getString("type").equals("string")) {
+            if (params.length() > 0 && (curr.getString("name").equals("setMode") ||
+                    params.getJSONObject(0).getString("type").equals("string"))) {
                 spinnersMap.put(params.getJSONObject(0).getString("name"),
                         loadSpinner(params.getJSONObject(0).getJSONArray("supportedValues"),
                                 context, layoutInflater, params.getJSONObject(0).getString("name")));
@@ -73,7 +74,7 @@ public abstract class DeviceView {
         return spinnerView;
     }
 
-    private class SpinnerItem {
+    class SpinnerItem {
         String itemId;
         String itemText;
 

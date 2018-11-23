@@ -36,10 +36,13 @@
     <string name="verticalSwing">Vertical swing</string>
     <string name="noDevices">There are no devices in this room.</string>
     <string name="color">Color</string>
-    <string name="setColor">Set color</string>
+    <string name="setColor">Select color</string>
+    <string name="setMode">Mode</string>
     <string name="red">Red</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="accept">Accept</string>
     <string name="newColor">New color</string>
+    <string name="party">Party</string>
+    <string name="vacation">Vacation</string>
 </resources>
