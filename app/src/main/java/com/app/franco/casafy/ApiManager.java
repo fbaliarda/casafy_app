@@ -26,7 +26,7 @@ import java.util.Set;
 
 public abstract class ApiManager {
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/api/";
+    private static final String BASE_URL = "http://192.168.1.104:8080/api/";
     private static final String ROOMS = "rooms/";
     private static final String DEVICES = "devices/";
     private static final String DEVICE_TYPES = "devicetypes/";

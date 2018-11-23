@@ -36,4 +36,12 @@
     <string name="routineFinished">¡Rutina ejecutada con exito!</string>
     <string name="connectionFailed">Ha habido un problema al conectar con el servidor.</string>
     <string name="noDevices">No hay dispositivos en esta habitación.</string>
+    <string name="routineFailed">Ha habido un problema al conectar con el servidor.</string>
+    <string name="color">Color</string>
+    <string name="setColor">Elegir color</string>
+    <string name="red">Rojo</string>
+    <string name="green">Verde</string>
+    <string name="blue">Azul</string>
+    <string name="accept">Aceptar</string>
+    <string name="newColor">Nuevo color</string>
 </resources>

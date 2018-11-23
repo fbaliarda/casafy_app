@@ -1,5 +1,6 @@
 package com.app.franco.casafy.devices;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -35,12 +36,10 @@ public class SeekbarView {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
     }
