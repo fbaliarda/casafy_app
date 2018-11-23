@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.app.franco.casafy.Action;
 import com.app.franco.casafy.ApiManager;
 import com.app.franco.casafy.Device;
 import com.app.franco.casafy.DeviceSettingsActivity;
+import com.app.franco.casafy.DeviceType;
 import com.app.franco.casafy.MainActivity;
 import com.app.franco.casafy.R;
 
@@ -43,6 +45,7 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
     private class ViewHolder {
         private ImageView image;
         private TextView name;
+        private TextView nameNoStatus;
         private Switch onSwitch;
         private ImageView editDevice;
     }
@@ -58,6 +61,7 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.device_icon);
             holder.name = (TextView) convertView.findViewById(R.id.device_name);
+            holder.nameNoStatus = (TextView) convertView.findViewById(R.id.device_nameNoStatus);
             holder.onSwitch = (Switch)convertView.findViewById(R.id.on_switch);
             holder.editDevice = (ImageView)convertView.findViewById(R.id.edit_device);
             convertView.setTag(holder);
@@ -66,7 +70,6 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
 
         final Device device = getItem(position);
         holder.image.setImageResource(device.getIcon());
-        holder.name.setText(device.getName());
         /*if(!device.getType().isSupported())
             holder.name.setText("Desconocido");*/
         if(!device.getType().isSupported())
@@ -86,20 +89,31 @@ public class DeviceArrayAdapter extends ArrayAdapter<Device> {
                 getContext().startActivity(intent);
             }
         });
-        holder.onSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Action a;
-                if (isChecked)
-                    a = new Action("turnOn", device.getId(), new ArrayList<String>());
-                else
-                    a = new Action("turnOff", device.getId(), new ArrayList<String>());
-                new ActionPlayer().execute(a);
-            }
-        });
-        Map<String,Switch> loadingValues = new HashMap<>();
-        loadingValues.put(device.getId(),holder.onSwitch);
-        new SwitchLoader().execute(loadingValues);
+
+        if(device.getType().hasStatus()) {
+            holder.name.setText(device.getName());
+            holder.nameNoStatus.setText("");
+            holder.onSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Action a;
+                    if (isChecked)
+                        a = new Action("turnOn", device.getId(), new ArrayList<String>());
+                    else
+                        a = new Action("turnOff", device.getId(), new ArrayList<String>());
+                    new ActionPlayer().execute(a);
+                }
+            });
+
+            Map<String,Switch> loadingValues = new HashMap<>();
+            loadingValues.put(device.getId(),holder.onSwitch);
+            new SwitchLoader().execute(loadingValues);
+        } else {
+            holder.onSwitch.setVisibility(View.INVISIBLE);
+            holder.name.setText("");
+            holder.nameNoStatus.setText(device.getName());
+        }
+
         return convertView;
     }
 
